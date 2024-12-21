@@ -27,7 +27,7 @@ PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
 ]]
 
 MainTab:AddButton({
-	Name = "Best Dahood Aimbot ( CLICK TWICE )",
+	Name = "Best Dahood Aimbot |CLICK TWICE|",
 	Callback = function()
       		local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
