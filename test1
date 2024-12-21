@@ -71,13 +71,3 @@ Callback = <loadstring(game:HttpGet("https://raw.githubusercontent.com/nomercy00
 
 
 OrionLib:Init()
-  	end    
-})
-
---[[
-Name = <Best Dahood Aimbot> - The name of the button.
-Callback = <loadstring(game:HttpGet("https://raw.githubusercontent.com/nomercy0000/dahood/refs/heads/main/pack"))()> - The function of the button.
-]]
-
-
-OrionLib:Init()
