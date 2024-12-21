@@ -58,14 +58,24 @@ PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
 ]]
 
 MainTab:AddButton({
-	Name = "Best Dahood Aimbot",
+	Name = "Best Dahood Aimbot |CLICK TWICE|",
 	Callback = function()
       	loadstring(game:HttpGet("https://raw.githubusercontent.com/nomercy0000/dahood/refs/heads/main/pack"))()
   	end    
 })
 
 --[[
-Name = <Best Dahood Aimbot> - The name of the button.
+Name = <Best Dahood Aimbot |CLICK TWICE|> - The name of the button.
+Callback = <loadstring(game:HttpGet("https://raw.githubusercontent.com/nomercy0000/dahood/refs/heads/main/pack"))()> - The function of the button.
+]]
+
+
+OrionLib:Init()
+  	end    
+})
+
+--[[
+Name = <Best Dahood Aimbot |CLICK TWICE|> - The name of the button.
 Callback = <loadstring(game:HttpGet("https://raw.githubusercontent.com/nomercy0000/dahood/refs/heads/main/pack"))()> - The function of the button.
 ]]
 
