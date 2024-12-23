@@ -1,83 +1,151 @@
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
-local Window = OrionLib:MakeWindow({Name = "OP Dahood Script!🔥", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+local Window = OrionLib:MakeWindow({Name = "Best Dahood Script By Nomercy", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
 --[[
-Name = <Best Dahood Script🔥> - The name of the UI.
+Name = <string> - The name of the UI.
 HidePremium = <bool> - Whether or not the user details shows Premium status or not.
 SaveConfig = <bool> - Toggles the config saving in the UI.
 ConfigFolder = <string> - The name of the folder where the configs are saved.
 IntroEnabled = <bool> - Whether or not to show the intro animation.
-IntroText = <W> - Text to show in the intro animation.
+IntroText = <string> - Text to show in the intro animation.
 IntroIcon = <string> - URL to the image you want to use in the intro animation.
 Icon = <string> - URL to the image you want displayed on the window.
 CloseCallback = <function> - Function to execute when the window is closed.
 ]]
 
 local MainTab = Window:MakeTab({
-	Name = "Main",
+	Name = "Dahood",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
 
 --[[
-Name = <Main> - The name of the tab.
-Icon = <Main> - The icon of the tab.
+Name = <string> - The name of the tab.
+Icon = <string> - The icon of the tab.
 PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
 ]]
 
-MainTab:AddButton({
-	Name = "Best Dahood Aimbot |CLICK TWICE|",
-	Callback = function()
-      		local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
-
-local Window = OrionLib:MakeWindow({Name = "OP Dahood Script!🔥", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+local Section = MainTab:AddSection({
+	Name = "Section"
+})
 
 --[[
-Name = <Best Dahood Script🔥> - The name of the UI.
-HidePremium = <bool> - Whether or not the user details shows Premium status or not.
-SaveConfig = <bool> - Toggles the config saving in the UI.
-ConfigFolder = <string> - The name of the folder where the configs are saved.
-IntroEnabled = <bool> - Whether or not to show the intro animation.
-IntroText = <W> - Text to show in the intro animation.
-IntroIcon = <string> - URL to the image you want to use in the intro animation.
-Icon = <string> - URL to the image you want displayed on the window.
-CloseCallback = <function> - Function to execute when the window is closed.
+Name = <string> - The name of the section.
 ]]
 
-local MainTab = Window:MakeTab({
-	Name = "Main",
+MainTab:AddButton({
+	Name = "Dahood Paid",
+	Callback = function()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/nomercy0000/nomercy-dahood/refs/heads/main/hm"))()
+  	end    
+})
+
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
+
+MainTab:AddButton({
+	Name = "Animation Pack",
+	Callback = function()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/Vcsk/RobloxScripts/main/DaHood/AnimationPack.lua"))()
+  	end    
+})
+
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
+
+MainTab:AddButton({
+	Name = "Starhook",
+	Callback = function()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/Dekos-lgbty/dahood/main/starhook"))()
+  	end    
+})
+
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
+
+local BruhTab = Window:MakeTab({
+	Name = "Basics",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
 
 --[[
-Name = <Main> - The name of the tab.
-Icon = <Main> - The icon of the tab.
+Name = <string> - The name of the tab.
+Icon = <string> - The icon of the tab.
 PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
 ]]
 
-MainTab:AddButton({
-	Name = "Best Dahood Aimbot |CLICK TWICE|",
+local Section = BruhTab:AddSection({
+	Name = "Section"
+})
+
+--[[
+Name = <string> - The name of the section.
+]]
+
+BruhTab:AddButton({
+	Name = "Noclip",
 	Callback = function()
-      	loadstring(game:HttpGet("https://raw.githubusercontent.com/nomercy0000/dahood/refs/heads/main/pack"))()
+     	local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+-- Function to disable collisions
+local function enableNoclip()
+    for _, part in pairs(character:GetDescendants()) do
+        if part:IsA("BasePart") then
+            part.CanCollide = false
+        end
+    end
+end
+
+-- Continuously ensure noclip stays active
+game:GetService("RunService").Stepped:Connect(function()
+    enableNoclip()
+end)
+
+-- Handle when the character is reloaded
+player.CharacterAdded:Connect(function(newCharacter)
+    character = newCharacter
+    enableNoclip()
+end)
+
+-- Initial setup
+enableNoclip()
   	end    
 })
 
 --[[
-Name = <Best Dahood Aimbot |CLICK TWICE|> - The name of the button.
-Callback = <loadstring(game:HttpGet("https://raw.githubusercontent.com/nomercy0000/dahood/refs/heads/main/pack"))()> - The function of the button.
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
 ]]
 
 
-OrionLib:Init()
-  	end    
+
+local BasicTab = Window:MakeTab({
+	Name = "Settings",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
 })
 
 --[[
-Name = <Best Dahood Aimbot |CLICK TWICE|> - The name of the button.
-Callback = <loadstring(game:HttpGet("https://raw.githubusercontent.com/nomercy0000/dahood/refs/heads/main/pack"))()> - The function of the button.
+Name = <string> - The name of the tab.
+Icon = <string> - The icon of the tab.
+PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
 ]]
 
+local Section = BasicTab:AddSection({
+	Name = "Section"
+})
 
-OrionLib:Init()
+--[[
+Name = <string> - The name of the section.
+]]
+
+BasicTab:AddParagraph("Use these settings for dahood paid!","Aim assist - enabled, smoothing - enabled, unlock my target on death - enabled, unlock on my death - enabled, Prediction 0, smoothing 1, DO NOT MESS WITH THE REST OF THE SETTINGS!  ")
