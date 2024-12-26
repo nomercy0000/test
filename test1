@@ -1,3 +1,10 @@
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local Workspace = game:GetService("Workspace")
+
+-- Color table for ESP
 local colourTable = {
     Green = Color3.fromRGB(0, 255, 0),
     Blue = Color3.fromRGB(0, 0, 255),
@@ -6,47 +13,65 @@ local colourTable = {
     Orange = Color3.fromRGB(255, 165, 0),
     Purple = Color3.fromRGB(128, 0, 128)
 }
-local colourChosen = colourTable.Red -- Change "Red" to whatever colour you like from the table above, feel free to add other colours as well.
-_G.ESPToggle = false -- This is the variable used for enabling/disabling ESP. If you are using a GUI library, or your own custom GUI, then set this variable to the callback function. 
- 
--- Services and lp
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local RunService = game:GetService("RunService")
-local UserInputService = game:GetService("UserInputService")
-local Workspace = game:GetService("Workspace")
- 
--- The following screen gui, frame and button creation may be deleted if you are using a custom GUI library. 
--- Create the screen gui
+local colourChosen = colourTable.Red -- Default color for ESP
+_G.ESPToggle = false -- This is the variable for toggling ESP
+
+-- Create GUI elements
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "ESPToggleGui"
 screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
- 
--- Create a frame
+
 local mainFrame = Instance.new("Frame")
 mainFrame.Name = "MainFrame"
-mainFrame.Size = UDim2.new(1, 0, 1, 0) 
-mainFrame.BackgroundTransparency = 1  
+mainFrame.Size = UDim2.new(0, 200, 0, 50)
+mainFrame.Position = UDim2.new(0.5, -100, 0.5, -25)
+mainFrame.BackgroundTransparency = 1
 mainFrame.Parent = screenGui
- 
--- Create the button
-local toggleButton = Instance.new("TextButton") 
+
+local toggleButton = Instance.new("TextButton")
 toggleButton.Name = "ToggleButton"
 toggleButton.Size = UDim2.new(0, 200, 0, 50)
-toggleButton.Position = UDim2.new(0.5, -100, 0.5, -25)
 toggleButton.Text = "Toggle ESP"
 toggleButton.Parent = mainFrame
- 
+
+-- Draggable GUI functionality
+local dragging = false
+local dragInput, dragStart, startPos
+
+-- When mouse is pressed down on the button, start dragging
+toggleButton.InputBegan:Connect(function(input, gameProcessed)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 and not gameProcessed then
+        dragging = true
+        dragStart = input.Position
+        startPos = mainFrame.Position
+    end
+end)
+
+-- When mouse is moved, update the position of the frame
+UserInputService.InputChanged:Connect(function(input)
+    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        local delta = input.Position - dragStart
+        mainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+
+-- When mouse button is released, stop dragging
+UserInputService.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = false
+    end
+end)
+
+-- ESP Logic: Add highlight to character
 local function getCharacter(player)
     return Workspace:FindFirstChild(player.Name)
 end
- 
--- Add highlights to players
+
 local function addHighlightToCharacter(player, character)
-    if player == LocalPlayer then return end  -- Skip local player
+    if player == LocalPlayer then return end -- Skip local player
     local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
     if humanoidRootPart and not humanoidRootPart:FindFirstChild("Highlight") then
-        local highlightClone = Instance.new("Highlight")  -- Create a new Highlight instance
+        local highlightClone = Instance.new("Highlight")
         highlightClone.Name = "Highlight"
         highlightClone.Adornee = character
         highlightClone.Parent = humanoidRootPart
@@ -56,8 +81,7 @@ local function addHighlightToCharacter(player, character)
         highlightClone.FillTransparency = 0.5
     end
 end
- 
--- Remove highlights from player
+
 local function removeHighlightFromCharacter(character)
     local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
     if humanoidRootPart then
@@ -67,8 +91,8 @@ local function removeHighlightFromCharacter(character)
         end
     end
 end
- 
--- Function to update highlights based on the value of _G.ESPToggle
+
+-- Update highlights based on ESP toggle status
 local function updateHighlights()
     for _, player in pairs(Players:GetPlayers()) do
         local character = getCharacter(player)
@@ -81,13 +105,13 @@ local function updateHighlights()
         end
     end
 end
- 
--- Connect events through RenderStepped to loop
+
+-- Connect RenderStepped to continuously update ESP highlights
 RunService.RenderStepped:Connect(function()
     updateHighlights()
 end)
- 
--- Add highlight to joining players
+
+-- Handle player joining (add highlight if ESP is on)
 Players.PlayerAdded:Connect(function(player)
     player.CharacterAdded:Connect(function(character)
         if _G.ESPToggle then
@@ -95,18 +119,16 @@ Players.PlayerAdded:Connect(function(player)
         end
     end)
 end)
- 
--- Remove highlights from leaving players
+
+-- Handle player leaving (remove highlight)
 Players.PlayerRemoving:Connect(function(playerRemoved)
     local character = playerRemoved.Character
     if character then
         removeHighlightFromCharacter(character)
     end
 end)
- 
--- The following code may be deleted if you are using a custom GUI library. 
- 
--- Toggle ESP Button Text based on variable status
+
+-- Toggle ESP on button click
 toggleButton.MouseButton1Click:Connect(function()
     _G.ESPToggle = not _G.ESPToggle
     if _G.ESPToggle then
@@ -115,17 +137,17 @@ toggleButton.MouseButton1Click:Connect(function()
         toggleButton.Text = "ESP OFF"
     end
 end)
- 
+
 -- Initial button text
 if _G.ESPToggle then
     toggleButton.Text = "ESP ON"
 else
     toggleButton.Text = "ESP OFF"
 end
- 
+
 -- Keybind to toggle GUI visibility
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
-    if input.KeyCode == Enum.KeyCode.H and not gameProcessed then -- Change Enum.KeyCode.H to another key if you want to, e.g. Enum.KeyCode.P for "P" Key.
+    if input.KeyCode == Enum.KeyCode.H and not gameProcessed then
         mainFrame.Visible = not mainFrame.Visible
     end
 end)
